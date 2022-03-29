@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+    	<link href="app.css" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+              rel="stylesheet">
+        <title>Notes <YOUR NAME HERE> </title>
+    </head>
+    <body>
+    <div class="rows">
+        <div class="row">
+            <div class='logo'>
+                <img src="simpson.jpg" class="profile" onclick="document.getElementById('id01').style.display='block'" alt="My Image">
+                <div class="title">My Notes</div>
+                <span class="material-icons" id="noteadd" onclick="insertNote()" style="float:right;top:6px;">note_add</span>
+            </div>
+            <div class="main">
+                <span class="material-icons" style="left:20px">notification_add</span>
+                <span class="material-icons" style="left:45%">person_add_alt</span>
+                <span class="material-icons" onclick="deletenote()" style="float:right">delete_outline</span>
+            </div>
+            <div class="main2">
+                <span class="material-icons" onclick="document.getElementById('id01').style.display='block'" style="left:20px">arrow_back</span>
+                <span class="material-icons" style="left:25%">notification_add</span>
+                <span class="material-icons" style="left:55%">person_add_alt</span>
+                <span class="material-icons" onclick="deletenote()" style="float:right">delete_outline</span>
+            </div>
+        </div>
+        <div class="row2">
+            <div class="sidebar">
+                <div class="searchbar">
+                    <span class="material-icons" style="left:20px;">search</span>
+                    <input class="notesearch" type="search" placeholder="Search all notes">
+                </div>
+                <div class="noteList">
+                    <div id="listed">
+                        <div class="note" id="note2" onclick="getnote(this.id)">This is a note with a long line of text. Notice that the text will automatically wrap to the next line once it reaches the right side of the screen.<div class="curdate" id="date2">3/14/2022,    2:24:25 AM</div></div>
+                        <div class="note" id="note1" onclick="getnote(this.id)">Another wrapping line example<div class="curdate" id="date1">3/14/2022,    1:17:04 AM</div></div>
+                        <div class="note" id="note0" onclick="getnote(this.id)">CSE316<div class="curdate" id="date0">3/13/2022,    11:54:13 AM</div></div>
+                    </div>
+
+                </div>
+            </div>
+            <div class="text">
+                <textarea id="textfield" onkeyup="update()" style="height:99%;width:99%;border: none; resize: none"></textarea>
+            </div>
+        </div>
+    </div>
+    <div id="id01" class="modal">
+        <form class="modal-content" action="index.html">
+            <div class="container">
+                <div class="editp">
+                    <h2 style="margin-top: 5px; margin-bottom: 40px;">Edit Profile</h2>
+                    <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+                </div>
+                <div class="prof">
+                    <img src="simpson.jpg" class="profile" style="margin-left:30px;" onclick="document.getElementById('id01').style.display='block'" alt="My Image">
+                    <div class="newimg">Add new image</div>
+                    <div class="removeimg">Remove image</div>
+                </div>
+                <label for="name"><b>Name</b></label>
+                <input type="text" value="Dohhyun" placeholder="Enter Name" name="name" required>
+
+                <label for="email"><b>Email</b></label>
+                <input type="text" value="dohhyun.lee@stonybrook.edu" placeholder="Enter Email" name="email" required>
+
+                <label for="psw-repeat"><b>Color Scheme</b></label>
+                <select class="select">
+                    <option>Light</option>
+                    <option>Dark</option>
+                </select>
+
+                <div class="clearfix">
+                    <button type="submit" class="savebtn">Save</button>
+                    <div class="logout">Logout</div>
+                </div>
+            </div>
+        </form>
+    </div>
+    <script src="main.js">
+
+    </script>
+    </body>
+</html>
+
