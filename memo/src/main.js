@@ -1,7 +1,7 @@
 let modal = document.getElementById('id01');
 
 window.onclick = function(event) {
-    if (event.target == modal) {
+    if (event.target === modal) {
         modal.style.display = "none";
     }
 }
@@ -42,7 +42,7 @@ noteArray.push(thirdn);
 
 function findID(noteID){
     for(let i=0; i<noteArray.length; i++){
-        if(`note${i}` == noteID){
+        if(`note${i}` === noteID){
             return i;
         }
     }
@@ -66,16 +66,16 @@ function deletenote(){
     noteArray[currentNoteID].exist = 0;
     document.getElementById(currentNote).style.display="none";
     for(let i=noteArray.length; i>0; i--){
-        if(noteArray[i-1].exist==1){
+        if(noteArray[i-1].exist===1){
             getnote(`note${i-1}`)
             empty = 0;
             break;
         }
-        if(i==1){
+        if(i===1){
             empty = 1;
         }
     }
-    if(empty == 1){
+    if(empty === 1){
         document.getElementById('textfield').value = "";
         document.getElementById('textfield').style.visibility="hidden";
     }
@@ -114,7 +114,7 @@ function gettime() {
 }
 
 function insertNote() {
-    if(empty == 1){
+    if(empty === 1){
         document.getElementById('textfield').style.visibility="visible";
     }
     noteID += 1;
@@ -138,3 +138,4 @@ function update() {
     document.getElementById(`note${currentNoteID}`).innerText = getfirstline();
     document.getElementById(`note${currentNoteID}`).insertAdjacentHTML("beforeend", gettime());
 }
+
