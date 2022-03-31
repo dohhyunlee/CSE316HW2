@@ -10,6 +10,7 @@
     --border-color: darkgray;
 }
 
+
 html{
     height: 100%;
     margin: 0;
@@ -17,11 +18,12 @@ html{
 }
 
 body {
-    background-color: var(--background-color);
+ 	background-color: var(--background-color);
     margin: 0;
     padding: 0;
     height: 100%;
 }
+
 
 .material-icons {
     position: relative;
@@ -56,7 +58,7 @@ textarea{
     display: flex;
     top: 50px;
     left: 0;
-    bottom: 1px;
+    bottom: 0;
     right: 0;
 }
 
@@ -104,6 +106,10 @@ textarea{
 .text {
     background: var(--background-color);
     flex: auto;
+    height:100%;
+    width:99%;
+    display: flex;
+    flex-direction: column;
 }
 
 .sidebar {
@@ -286,6 +292,8 @@ hr {
     transform: translate(-50%, -50%);
     left: 70%;
 }
+
+
 /* These rules only apply if the window's max-width is 500px or less */
 @media all and (max-width: 500px) {
     .logo {
@@ -327,4 +335,7 @@ hr {
         width: 100%; /* Could be more or less, depending on screen size */
         height: 100%;
     }
+
 }
+
+
