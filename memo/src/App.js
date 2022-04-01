@@ -1,11 +1,30 @@
 import React, {useState} from "react";
 import {useRef} from "react";
+import {useEffect} from "react";
 import Tag from './components/Tag';
 import './app.css';
 
 
 
 function App() {
+
+    useEffect(()=>{
+        let localArr = localStorage.getItem('localNotes');
+        let localID = localStorage.getItem('localID');
+        localArr = JSON.parse(localArr);
+        localID = JSON.parse(localID);
+        setNoteArray(localArr);
+        setnoteID(localID);
+        setcurrentNote(localArr[localArr.length-1]);
+        setInput(localArr[localArr.length-1].text);
+        },
+        []
+    )
+
+    const saveLocal = () => {
+        localStorage.setItem('localNotes',JSON.stringify(noteArray));
+        localStorage.setItem('localID',JSON.stringify(noteID));
+    }
 
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -24,10 +43,7 @@ function App() {
         }
     };
 
-    const inputRef = useRef(null);
     const modalRef = useRef(null);
-
-    let empty = false;
 
     const getTime = () => {
         let date = new Date();
@@ -87,18 +103,17 @@ function App() {
 
     const [input, setInput] = useState(currentNote.text);
 
-    const [date, setDate] = useState(new Date());
+    const [name, setName] = useState("Dohhyun");
 
-    const getNote = () => {
-
-    }
+    const [email, setEmail] = useState("dohhyun.lee@stonybrook.edu");
 
     const deleteNote = () => {
-        currentNote.text = "";
-        currentNote.exist = 0;
-        setNoteArray(noteArray.filter(note => note.id !== currentNote.id));
-        setcurrentNote(noteArray[noteArray.length-1]);
-        inputRef.current.value = currentNote.text;
+        const newArray = noteArray.filter(note => note.id !== currentNote.id)
+        setNoteArray(newArray);
+        const newCurnote = newArray[newArray.length-1];
+        setcurrentNote(newCurnote);
+        setInput(newCurnote.text);
+        saveLocal();
     }
 
     const getFirstline = (note) =>{
@@ -118,12 +133,14 @@ function App() {
         }
         setcurrentNote(newNote);
         setNoteArray(noteArray.concat(newNote));
-        inputRef.current.value = "";
+        setInput("New Note");
+        saveLocal();
     }
 
     const update = () => {
-        currentNote.text = inputRef.current.value;
+        currentNote.text = input;
         currentNote.date = getTime();
+        saveLocal();
     }
 
     return (
@@ -160,7 +177,7 @@ function App() {
                     </div>
                     <div className="noteList">
                         {noteArray.map((note) => (
-                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {inputRef.current.value = note.text;setcurrentNote(note) }}>
+                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setInput(note.text); setcurrentNote(note)}}>
                                 <div className="note">{getFirstline(note)}
                                     <div className="curdate">{note.date}</div>
                                 </div>
@@ -170,10 +187,9 @@ function App() {
                     </div>
                 </div>
                 <div className="text">
-                    <textarea className="textfield" ref={inputRef} onKeyUp={update}
+                    <textarea className="textfield" onKeyUp={update} value={input} onChange={e => setInput(e.target.value)}
                               style={{height:"100%", width:"100%",border:"none", resize: "none"}}></textarea>
-                    <Tag className="tagfield" note={currentNote}
-                         />
+                    <Tag className="tagfield" notearr={noteArray} note={currentNote}/>
                 </div>
             </div>
         </div>
@@ -191,10 +207,10 @@ function App() {
                             <div className="removeimg">Remove image</div>
                         </div>
                         <label htmlFor="name"><b>Name</b></label>
-                        <input type="text" value="Dohhyun" placeholder="Enter Name" name="name" required/>
+                        <input type="text" value={name} onChange={(e)=> setName(e.target.value)} placeholder="Enter Name" name="name" required/>
 
                         <label htmlFor="email"><b>Email</b></label>
-                        <input type="text" value="dohhyun.lee@stonybrook.edu" placeholder="Enter Email" name="email"
+                        <input type="text" value={email} onChange={(e)=> setEmail(e.target.value)} placeholder="Enter Email" name="email"
                                required/>
 
                         <label htmlFor="psw-repeat"><b>Color Scheme</b></label>
