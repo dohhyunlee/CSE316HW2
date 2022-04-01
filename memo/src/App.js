@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import {useRef} from "react";
 import {useEffect} from "react";
-import Tag from './components/Tag';
+import { WithContext as ReactTags } from 'react-tag-input';
 import './app.css';
-
 
 
 function App() {
@@ -15,17 +14,23 @@ function App() {
         localID = JSON.parse(localID);
         setNoteArray(localArr);
         setnoteID(localID);
-        setcurrentNote(localArr[localArr.length-1]);
-        setInput(localArr[localArr.length-1].text);
+        if (localArr !== []){
+            setcurrentNote(localArr[localArr.length-1]);
+            setInput(localArr[localArr.length-1].text);
+            setCurtag(localArr[localArr.length-1].tags);
+            } else{
+            setlistEmpty(true);
+        }
         },
         []
     )
 
-    const saveLocal = () => {
-        localStorage.setItem('localNotes',JSON.stringify(noteArray));
+    const saveLocal = (ar) => {
+        localStorage.setItem('localNotes',JSON.stringify(ar));
         localStorage.setItem('localID',JSON.stringify(noteID));
     }
 
+    const [listEmpty, setlistEmpty] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
 
     const openModal = () => {
@@ -75,21 +80,18 @@ function App() {
         id : 0,
         text : "CSE316",
         date : getTime(),
-        exist : 1,
         tags: []
     };
     const secondn = {
         id : 1,
         text : "Another wrapping line example",
         date : getTime(),
-        exist : 1,
         tags: []
     };
     const thirdn = {
         id : 2,
         text : "This is a note with a long line of text. Notice that the text will automatically wrap to the next line once it reaches the right side of the screen.\n\nYou can press enter to add new lines as well.",
         date : getTime(),
-        exist : 1,
         tags: []
     };
 
@@ -101,19 +103,27 @@ function App() {
 
     const [currentNote, setcurrentNote] = useState(thirdn);
 
-    const [input, setInput] = useState(currentNote.text);
+    const [input, setInput] = useState("currentNote.text");
 
     const [name, setName] = useState("Dohhyun");
 
     const [email, setEmail] = useState("dohhyun.lee@stonybrook.edu");
 
+    const [curtag, setCurtag] = useState([]);
+
     const deleteNote = () => {
         const newArray = noteArray.filter(note => note.id !== currentNote.id)
         setNoteArray(newArray);
-        const newCurnote = newArray[newArray.length-1];
-        setcurrentNote(newCurnote);
-        setInput(newCurnote.text);
-        saveLocal();
+        if(newArray === []){
+            setlistEmpty(true);
+            setCurtag([]);
+        } else {
+            const newCurnote = newArray[newArray.length-1];
+            setcurrentNote(newCurnote);
+            setInput(newCurnote.text);
+            setCurtag(newCurnote.tags);
+        }
+        saveLocal(newArray);
     }
 
     const getFirstline = (note) =>{
@@ -128,20 +138,50 @@ function App() {
             id : noteID,
             text : "New Note",
             date : getTime(),
-            exist : 1,
             tags: []
         }
         setcurrentNote(newNote);
-        setNoteArray(noteArray.concat(newNote));
+        const newArray = noteArray.concat(newNote);
+        setNoteArray(newArray);
         setInput("New Note");
-        saveLocal();
+        setCurtag(newNote.tags);
+        saveLocal(newArray);
     }
 
     const update = () => {
         currentNote.text = input;
         currentNote.date = getTime();
-        saveLocal();
+        saveLocal(noteArray);
     }
+
+
+    const [, setTags] = useState([]);
+
+
+    const handleDelete = (i) => {
+        currentNote.tags = currentNote.tags.filter((tag, index) => index !== i);
+        setTags(currentNote.tags);
+        saveLocal(noteArray);
+    };
+
+    const handleAddition = (tag) => {
+        currentNote.tags.push(tag);
+        setTags(tag);
+        saveLocal(noteArray);
+    };
+
+    const handleDrag = (tag, currPos, newPos) => {
+        currentNote.tags.splice(currPos, 1);
+        currentNote.tags.splice(newPos, 0, tag);
+        setTags([tag, ...currentNote.tags]);
+        saveLocal(noteArray);
+    };
+
+    const onTagUpdate = (i, newTag) => {
+        currentNote.tags.splice(i, 1, newTag);
+        setTags(currentNote.tags);
+        saveLocal(noteArray);
+    };
 
     return (
         <div>
@@ -175,21 +215,37 @@ function App() {
                         <span className="material-icons" style={{left:"20px"}}>search</span>
                         <input className="notesearch" type="search" placeholder="Search all notes"></input>
                     </div>
-                    <div className="noteList">
+                    <div className={listEmpty ? 'emptyList' : 'noteList'}>
                         {noteArray.map((note) => (
-                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setInput(note.text); setcurrentNote(note)}}>
+                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setInput(note.text); setcurrentNote(note); setCurtag(note.tags)}}>
                                 <div className="note">{getFirstline(note)}
                                     <div className="curdate">{note.date}</div>
                                 </div>
                             </div>
                         ))}
-
                     </div>
                 </div>
-                <div className="text">
+                <div className={listEmpty ? "emptytextfield" : "text"}>
                     <textarea className="textfield" onKeyUp={update} value={input} onChange={e => setInput(e.target.value)}
                               style={{height:"100%", width:"100%",border:"none", resize: "none"}}></textarea>
-                    <Tag className="tagfield" notearr={noteArray} note={currentNote}/>
+                    <div className="tagDiv">
+                        <ReactTags
+                            handleDelete={handleDelete}
+                            handleAddition={handleAddition}
+                            handleDrag={handleDrag}
+                            onTagUpdate={onTagUpdate}
+                            placeholder="Enter a tag"
+                            autofocus={false}
+                            allowDeleteFromEmptyInput={true}
+                            autocomplete={true}
+                            readOnly={false}
+                            allowUnique={true}
+                            allowDragDrop={true}
+                            inline={true}
+                            allowAdditionFromPaste={true}
+                            editable={true}
+                            tags={curtag}/>
+                    </div>
                 </div>
             </div>
         </div>
