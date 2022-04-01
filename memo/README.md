@@ -1,6 +1,17 @@
-# Getting Started with Create React App
+# MY MEMO APP
+111735093 Doh Hyun Lee
+
+dohhyun.lee@stonybrook.edu
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+
+## Follow Instructions
+
+### `npm install`
+### `npm install --save --force react-tag-input `
+### `npm start`
+
+
 
 ## Available Scripts
 

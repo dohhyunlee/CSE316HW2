@@ -17,8 +17,6 @@ function App() {
         setNoteArray(localArr);
         setnoteID(localID);
         if(localProfile !== null){
-            console.log("localProfile")
-            console.log(localProfile)
             setProfile(localProfile);
             setName(localProfile[0]);
             setEmail(localProfile[1]);
@@ -43,9 +41,11 @@ function App() {
 
 
     const saveLocal = (ar) => {
+        setNoteArray(ar);
         localStorage.setItem('localNotes',JSON.stringify(ar));
         localStorage.setItem('localID',JSON.stringify(noteID));
     }
+
 
     const [listEmpty, setlistEmpty] = useState(false);
     const [modalOpen, setModalOpen] = useState(false);
@@ -194,12 +194,14 @@ function App() {
     const handleDelete = (i) => {
         currentNote.tags = currentNote.tags.filter((tag, index) => index !== i);
         setTags(currentNote.tags);
+        setCurtag(currentNote.tags);
         saveLocal(noteArray);
     };
 
     const handleAddition = (tag) => {
         currentNote.tags.push(tag);
         setTags(tag);
+        setCurtag(currentNote.tags);
         saveLocal(noteArray);
     };
 
@@ -207,6 +209,7 @@ function App() {
         currentNote.tags.splice(currPos, 1);
         currentNote.tags.splice(newPos, 0, tag);
         setTags([tag, ...currentNote.tags]);
+        setCurtag(currentNote.tags);
         saveLocal(noteArray);
     };
 
