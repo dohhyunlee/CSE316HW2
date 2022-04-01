@@ -110,12 +110,16 @@ textarea{
     width:99%;
     display: flex;
     flex-direction: column;
+    width:var(--sidebar-width);
 }
 
 .sidebar {
     background: var(--background-color);
     width : var(--sidebar-width);
     border-right: 1px solid var(--border-color);
+}
+.sidebar2 {
+    display: none;
 }
 
 .searchbar{
@@ -124,7 +128,6 @@ textarea{
 }
 
 .noteList {
-    width: var(--sidebar-width);
     display: flex;
     flex-direction: column-reverse;
 }
@@ -140,13 +143,12 @@ textarea{
 .listed {
     padding: 8px 4px;
     height: 50px;
-    width: var(--sidebar-width);
-    border-right: 1px solid var(--border-color);
     border-bottom: 1px dotted black;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
 }
+
 .listed.on{
     background: rgb(229, 241, 253);
 }
@@ -370,10 +372,34 @@ hr {
     margin: 0 5px;
     padding: 3px;
 
+}
 
+.logo2{
+    display: none;
 }
 
 /* These rules only apply if the window's max-width is 500px or less */
+@media all and (min-width: 502px) {
+    .sidebar{
+        display:block;
+    }
+    .sidebar2T{
+        display: none;
+    }
+    .text{
+        display: flex;
+    }
+    .textF{
+        display: none;
+    }
+    .logo2T{
+        display: none;
+    }
+    .main2T{
+        display: none;
+    }
+}
+
 @media all and (max-width: 500px) {
     .logo {
         display: none;
@@ -381,11 +407,32 @@ hr {
     .sidebar{
         display: none;
     }
+    .logo2{
+        display: none;
+    }
+    .logo2T{
+        background: var(--background-color);
+        width : 500px;
+        border-bottom: 1px solid var(--border-color);
+        border-right: 1px solid var(--border-color);
+    }
+    .sidebar2{
+        display: none;
+    }
+    .sidebar2T{
+        width: 500px;
+    }
     .main{
         display: none;
     }
     .main2{
         display: block;
+    }
+    .main2T{
+        display: none;
+    }
+    .textF{
+        display: none;
     }
 
     /* The Modal (background) */

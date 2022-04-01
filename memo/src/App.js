@@ -1,6 +1,6 @@
 import React, {useState} from "react";
-import {useRef} from "react";
 import {useEffect} from "react";
+import {useRef} from "react";
 import { WithContext as ReactTags } from 'react-tag-input';
 import './app.css';
 
@@ -10,10 +10,26 @@ function App() {
     useEffect(()=>{
         let localArr = localStorage.getItem('localNotes');
         let localID = localStorage.getItem('localID');
+        let localProfile = localStorage.getItem('localProfile')
         localArr = JSON.parse(localArr);
         localID = JSON.parse(localID);
+        localProfile = JSON.parse(localProfile);
         setNoteArray(localArr);
         setnoteID(localID);
+        if(localProfile !== null){
+            console.log("localProfile")
+            console.log(localProfile)
+            setProfile(localProfile);
+            setName(localProfile[0]);
+            setEmail(localProfile[1]);
+            setSelected(localProfile[2]);
+            selectRef.current.value = localProfile[2];
+        } else{
+            setName("Dohhyun");
+            setEmail("dohhyun.lee@stonybrook.edu");
+            setSelected("2");
+            setProfile(["Dohhyun","dohhyun.lee@stonybrook.edu","2"]);
+        }
         if (localArr.length !== 0){
             setcurrentNote(localArr[localArr.length-1]);
             setInput(localArr[localArr.length-1].text);
@@ -24,6 +40,7 @@ function App() {
         },
         []
     )
+
 
     const saveLocal = (ar) => {
         localStorage.setItem('localNotes',JSON.stringify(ar));
@@ -47,8 +64,6 @@ function App() {
             setModalOpen(false);
         }
     };
-
-    const modalRef = useRef(null);
 
     const getTime = () => {
         let date = new Date();
@@ -103,13 +118,11 @@ function App() {
 
     const [currentNote, setcurrentNote] = useState(thirdn);
 
-    const [input, setInput] = useState("currentNote.text");
-
-    const [name, setName] = useState("Dohhyun");
-
-    const [email, setEmail] = useState("dohhyun.lee@stonybrook.edu");
+    const [input, setInput] = useState("");
 
     const [curtag, setCurtag] = useState([]);
+
+    const textRef = useRef(null);
 
     const deleteNote = () => {
         const newArray = noteArray.filter(note => note.id !== currentNote.id)
@@ -117,6 +130,7 @@ function App() {
         if(newArray.length === 0){
             setlistEmpty(true);
             setCurtag([]);
+            textRef.current.style.display = "none";
         } else {
             const newCurnote = newArray[newArray.length-1];
             setcurrentNote(newCurnote);
@@ -134,6 +148,7 @@ function App() {
 
     const insertNote = () => {
         if(listEmpty===true){
+            textRef.current.style.display = "flex";
             setlistEmpty(false);
         }
         setnoteID(noteID+1);
@@ -158,8 +173,23 @@ function App() {
     }
 
 
-    const [, setTags] = useState([]);
+    const [name, setName] = useState("Dohhyun");
+    const [email, setEmail] = useState("dohhyun.lee@stonybrook.edu");
+    const [selected, setSelected] = useState("1")
+    const [, setProfile] = useState([name,email,selected]);
 
+    const selectRef = useRef(null);
+
+    const handleChangeSelect = (e) => {
+        setSelected(e.target.value);
+    };
+
+    const saveProfile = () => {
+        setProfile([name,email,selected]);
+        localStorage.setItem('localProfile',JSON.stringify([name,email,selected]));
+    }
+
+    const [, setTags] = useState([]);
 
     const handleDelete = (i) => {
         currentNote.tags = currentNote.tags.filter((tag, index) => index !== i);
@@ -186,6 +216,14 @@ function App() {
         saveLocal(noteArray);
     };
 
+    const [sidebar, setSidebar] = useState(false);
+    const [text, setText] = useState(true);
+
+    const backButton = () => {
+        setSidebar(true);
+        setText(false);
+    }
+
     return (
         <div>
         <div className="rows">
@@ -197,14 +235,21 @@ function App() {
                     <span className="material-icons" id="noteadd" onClick={insertNote}
                           style={{float:'right', top:'6px'}}>note_add</span>
                 </div>
+                <div className={sidebar ? 'logo2T' : 'logo2'}>
+                    <img src="./simpson.jpg" className="profile"
+                         onClick={openModal} alt="MyImage"></img>
+                    <div className="title" style={{margin:"0 150px 0 0"}} >My Notes</div>
+                    <span className="material-icons" id="noteadd" onClick={insertNote}
+                          style={{float:'right', top:'6px'}}>note_add</span>
+                </div>
                 <div className="main">
                     <span className="material-icons" style={{left:"20px"}}>notification_add</span>
                     <span className="material-icons" style={{left:"45%"}}>person_add_alt</span>
                     <span className="material-icons" onClick={deleteNote}
                           style={{float:"right"}}>delete_outline</span>
                 </div>
-                <div className="main2">
-                        <span className="material-icons" onClick="document.getElementById('id01').style.display='block'"
+                <div className={sidebar ? 'main2T' : 'main2'}>
+                        <span className="material-icons" onClick={backButton}
                               style={{left:"20px"}}>arrow_back</span>
                     <span className="material-icons" style={{left:"25%"}}>notification_add</span>
                     <span className="material-icons" style={{left:"55%"}}>person_add_alt</span>
@@ -220,7 +265,7 @@ function App() {
                     </div>
                     <div className={listEmpty ? 'emptyList' : 'noteList'}>
                         {noteArray.map((note) => (
-                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setInput(note.text); setcurrentNote(note); setCurtag(note.tags)}}>
+                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setSidebar(false);setText(true);setInput(note.text); setcurrentNote(note); setCurtag(note.tags)}}>
                                 <div className="note">{getFirstline(note)}
                                     <div className="curdate">{note.date}</div>
                                 </div>
@@ -228,7 +273,22 @@ function App() {
                         ))}
                     </div>
                 </div>
-                <div className={listEmpty ? "emptytextfield" : "text"}>
+                <div className={sidebar ? 'sidebar2T' : 'sidebar2'}>
+                    <div className="searchbar">
+                        <span className="material-icons" style={{left:"20px"}}>search</span>
+                        <input className="notesearch" type="search" placeholder="Search all notes"></input>
+                    </div>
+                    <div className={listEmpty ? 'emptyList' : 'noteList'}>
+                        {noteArray.map((note) => (
+                            <div className={`listed ${currentNote === note && "on"}`} onClick={() => {setSidebar(false);setText(true);setInput(note.text); setcurrentNote(note); setCurtag(note.tags)}}>
+                                <div className="note">{getFirstline(note)}
+                                    <div className="curdate">{note.date}</div>
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div>
+                <div className={text ? 'text' : 'textF'} ref={textRef}>
                     <textarea className="textfield" onKeyUp={update} value={input} onChange={e => setInput(e.target.value)}
                               style={{height:"100%", width:"100%",border:"none", resize: "none"}}></textarea>
                     <div className="tagDiv">
@@ -253,7 +313,7 @@ function App() {
             </div>
         </div>
             <div id="id01" className={modalOpen ? 'modal' : 'closemodal'} onClick={(e) => ModalOff(e)}>
-                <form className="modal-content" action="" ref={modalRef}>
+                <form className="modal-content" action="">
                     <div className="container">
                         <div className="editp">
                             <h2 style={{marginTop : '5px', marginBottom: '40px'}}>Edit Profile</h2>
@@ -273,13 +333,13 @@ function App() {
                                required/>
 
                         <label htmlFor="color"><b>Color Scheme</b></label>
-                        <select className="select">
-                            <option>Light</option>
-                            <option>Dark</option>
+                        <select className="select" onChange={handleChangeSelect} ref={selectRef}>
+                            <option value="1">Light</option>
+                            <option value="2">Dark</option>
                         </select>
 
                         <div className="clearfix">
-                            <button type="submit" className="savebtn">Save</button>
+                            <button className="savebtn" onClick={saveProfile}>Save</button>
                             <div className="logout">Logout</div>
                         </div>
                     </div>
