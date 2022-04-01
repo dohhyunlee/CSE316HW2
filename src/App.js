@@ -15,7 +15,6 @@ function App() {
         localArr = JSON.parse(localArr);
         localID = JSON.parse(localID);
         localProfile = JSON.parse(localProfile);
-        setNoteArray(localArr);
         setnoteID(localID);
         if(localProfile !== null){
             setProfile(localProfile);
@@ -30,10 +29,9 @@ function App() {
             setProfile(["Dohhyun","dohhyun.lee@stonybrook.edu","2"]);
         }
         if (localArr !== null){
-            if (localArr === []){
-                setcurrentNote(localArr[localArr.length-1]);
-                setInput(localArr[localArr.length-1].text);
-                setCurtag(localArr[localArr.length-1].tags);
+            if (localArr !== []){
+                setNoteArray(localArr);
+                setText(false);
                 }
             } else{
             setNoteArray([]);
