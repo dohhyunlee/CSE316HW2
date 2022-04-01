@@ -7,6 +7,7 @@ import './app.css';
 
 function App() {
 
+
     useEffect(()=>{
         let localArr = localStorage.getItem('localNotes');
         let localID = localStorage.getItem('localID');
@@ -25,15 +26,19 @@ function App() {
         } else{
             setName("Dohhyun");
             setEmail("dohhyun.lee@stonybrook.edu");
-            setSelected("2");
+            setSelected("1");
             setProfile(["Dohhyun","dohhyun.lee@stonybrook.edu","2"]);
         }
-        if (localArr.length !== 0){
-            setcurrentNote(localArr[localArr.length-1]);
-            setInput(localArr[localArr.length-1].text);
-            setCurtag(localArr[localArr.length-1].tags);
+        if (localArr !== null){
+            if (localArr === []){
+                setcurrentNote(localArr[localArr.length-1]);
+                setInput(localArr[localArr.length-1].text);
+                setCurtag(localArr[localArr.length-1].tags);
+                }
             } else{
+            setNoteArray([]);
             setlistEmpty(true);
+            setText(false);
         }
         },
         []
