@@ -172,7 +172,8 @@ body {font-family: Arial, Helvetica, sans-serif;}
 * {box-sizing: border-box;}
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+input[type=text], select{
+    border: 1px solid black;
     width: 100%;
     padding: 10px;
     margin: 5px 0 12px 0;
@@ -220,7 +221,7 @@ button:hover {
 /* The Modal (background) */
 .modal {
     display: block; /* Hidden by default */
-    position: fixed; /* Stay in place */
+    position: fixed;
     z-index: 1; /* Sit on top */
     left: 0;
     top: 0;
@@ -308,8 +309,8 @@ hr {
 }
 
 .container {
-    margin: auto;
-    width: 50%;
+    margin: 10px;
+    width: 90%;
 }
 .ReactTags__tags {
     margin: 5px;

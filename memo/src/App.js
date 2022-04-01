@@ -14,7 +14,7 @@ function App() {
         localID = JSON.parse(localID);
         setNoteArray(localArr);
         setnoteID(localID);
-        if (localArr !== []){
+        if (localArr.length !== 0){
             setcurrentNote(localArr[localArr.length-1]);
             setInput(localArr[localArr.length-1].text);
             setCurtag(localArr[localArr.length-1].tags);
@@ -114,7 +114,7 @@ function App() {
     const deleteNote = () => {
         const newArray = noteArray.filter(note => note.id !== currentNote.id)
         setNoteArray(newArray);
-        if(newArray === []){
+        if(newArray.length === 0){
             setlistEmpty(true);
             setCurtag([]);
         } else {
@@ -133,6 +133,9 @@ function App() {
     }
 
     const insertNote = () => {
+        if(listEmpty===true){
+            setlistEmpty(false);
+        }
         setnoteID(noteID+1);
         const newNote = {
             id : noteID,
@@ -269,7 +272,7 @@ function App() {
                         <input type="text" value={email} onChange={(e)=> setEmail(e.target.value)} placeholder="Enter Email" name="email"
                                required/>
 
-                        <label htmlFor="psw-repeat"><b>Color Scheme</b></label>
+                        <label htmlFor="color"><b>Color Scheme</b></label>
                         <select className="select">
                             <option>Light</option>
                             <option>Dark</option>
