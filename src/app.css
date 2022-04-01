@@ -18,7 +18,7 @@ html{
 }
 
 body {
- 	background-color: var(--background-color);
+    background-color: var(--background-color);
     margin: 0;
     padding: 0;
     height: 100%;
@@ -111,7 +111,9 @@ textarea{
     flex-direction: column;
     width:var(--sidebar-width);
 }
-
+.textF{
+    display: none;
+}
 .sidebar {
     background: var(--background-color);
     width : var(--sidebar-width);

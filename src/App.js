@@ -130,7 +130,7 @@ function App() {
         if(newArray.length === 0){
             setlistEmpty(true);
             setCurtag([]);
-            textRef.current.style.display = "none";
+            setText(false);
         } else {
             const newCurnote = newArray[newArray.length-1];
             setcurrentNote(newCurnote);
@@ -148,8 +148,8 @@ function App() {
 
     const insertNote = () => {
         if(listEmpty===true){
-            textRef.current.style.display = "flex";
             setlistEmpty(false);
+            setText(false);
         }
         setnoteID(noteID+1);
         const newNote = {
@@ -324,7 +324,7 @@ function App() {
                                   title="Close Modal">&times;</span>
                         </div>
                         <div className="prof">
-                            <img src="simpson.jpg" className="profile" style={{marginLeft:"30px"}} alt="MyImage"/>
+                            <img src="./simpson.jpg" className="profile" style={{marginLeft:"30px"}} alt="MyImage"/>
                             <div className="newimg">Add new image</div>
                             <div className="removeimg">Remove image</div>
                         </div>
