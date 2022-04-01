@@ -95,7 +95,7 @@ textarea{
 }
 
 .title{
-    font: bold;
+    font-weight: bold;
     font-size: 1em;
     position: relative;
     top: 50%;
@@ -107,7 +107,6 @@ textarea{
     background: var(--background-color);
     flex: auto;
     height:100%;
-    width:99%;
     display: flex;
     flex-direction: column;
     width:var(--sidebar-width);
@@ -357,7 +356,7 @@ hr {
     height: 31px;
 }
 .ReactTags__selected span.ReactTags__tag:first-child {
-    margin-left: 0px;
+    margin-left: 0;
 }
 .ReactTags__selected a.ReactTags__remove {
     color: #aaa;
@@ -379,7 +378,7 @@ hr {
 }
 
 /* These rules only apply if the window's max-width is 500px or less */
-@media all and (min-width: 502px) {
+@media all and (min-width: 501px) {
     .sidebar{
         display:block;
     }
@@ -415,12 +414,14 @@ hr {
         width : 500px;
         border-bottom: 1px solid var(--border-color);
         border-right: 1px solid var(--border-color);
+        overflow: hidden;
     }
     .sidebar2{
         display: none;
     }
     .sidebar2T{
         width: 500px;
+        overflow: hidden;
     }
     .main{
         display: none;

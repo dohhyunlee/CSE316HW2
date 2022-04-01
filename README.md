@@ -8,8 +8,9 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Follow Instructions
 
 ### `npm install`
-### `npm install --save --force react-tag-input `
 ### `npm start`
+
+
 
 
 
